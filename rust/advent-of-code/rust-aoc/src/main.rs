@@ -3,7 +3,7 @@ use std::fs;
 
 
 fn day1_max_calories() {
-    let contents = fs::read_to_string("inputs/day1/input.txt")
+    let contents = fs::read_to_string("inputs/day1/full.txt")
         .expect("Error reading file...");
 
     let mut elf_calories : Vec<u32> = vec![0];
@@ -20,15 +20,32 @@ fn day1_max_calories() {
     }
 
     // get max value
-    let mut max_value: u32 = 0;
+    let mut max_values: [u32; 3] = [0, 0, 0];
 
     for num_calories in elf_calories {
-        if num_calories > max_value {
-            max_value = num_calories;
+        for value in max_values {
+            if num_calories > value {
+                // replace smallest value
+                let mut min_value = u32::MAX;
+                let mut min_i = 0;
+
+                for (i, value) in max_values.iter().enumerate() {
+                    if *value < min_value {
+                        min_value = *value;
+                        min_i = i;
+                    }
+                }
+
+                max_values[min_i] = num_calories;
+                break;
+            }
+
         }
     }
 
-    println!("Max calories: {max_value}");
+    let top3: u32 = max_values.iter().sum();
+
+    println!("Max of top 3 elves: {top3}");
 
 }
 
