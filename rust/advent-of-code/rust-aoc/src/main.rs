@@ -1,4 +1,5 @@
 
+use std::collections::HashMap;
 use std::fs;
 
 
@@ -49,6 +50,50 @@ fn day1_max_calories() {
 
 }
 
+fn day2_rock_paper_scissors() {
+
+    let file_path = "inputs/day2/full.txt";
+
+    let strategy_guide = fs::read_to_string(file_path)
+        .expect("Error reading input file.");
+
+    let opponent_action_encodings = HashMap::from([
+        ("A", 1),
+        ("B", 2),
+        ("C", 3)
+    ]);
+
+    let player_action_encodings = HashMap::from([
+        ("X", 1),
+        ("Y", 2),
+        ("Z", 3)
+    ]);
+
+    let action_rules = [
+        [0, 0, 0, 0],
+        [0, 3, 0, 6],
+        [0, 6, 3, 0],
+        [0, 0, 6, 3],
+    ];
+
+    let mut overall_score = 0;
+
+    for line in strategy_guide.split("\n") {
+        let inputs: Vec<&str> = line.split(" ").collect();
+        let opp_action_score = opponent_action_encodings[inputs[0]];
+        let player_action_score = player_action_encodings[inputs[1]];
+
+        let round_outcome = action_rules[player_action_score][opp_action_score];
+        let player_score = player_action_score + round_outcome;
+
+        println!("{player_score}");
+
+        overall_score += player_score;
+    }
+
+    println!("Overall score: {overall_score}");
+}
+
 fn main() {
-    day1_max_calories()
+    day2_rock_paper_scissors()
 }
