@@ -103,6 +103,41 @@ fn day2_rock_paper_scissors() {
     println!("Overall score: {overall_score}");
 }
 
+fn day3_rucksack_reorganization() {
+    let file_path = "inputs/2022/day3/full.txt";
+
+    let rucksacks = fs::read_to_string(file_path)
+                                    .unwrap();
+
+    let mut total_priority: u32 = 0;
+
+    for rucksack in rucksacks.split("\n") {
+        let rucksack_size = rucksack.len();
+        let rucksack_items = rucksack.as_bytes();
+        let compartment1 = &rucksack_items[..rucksack_size / 2 + 1];
+        let compartment2 = &rucksack_items[rucksack_size / 2..];
+
+        let mut special_item = 0u8;
+
+        for item in compartment1 {
+            if compartment2.contains(item) {
+                special_item = *item;
+                break;
+            }
+        };
+
+        let priority = if special_item >= b'a' {
+            special_item - b'a' + 1
+        } else {
+            special_item - b'A' + 27
+        };
+
+        total_priority += u32::from(priority);
+    }
+
+    println!("{total_priority}");
+}
+
 fn main() {
-    day2_rock_paper_scissors()
+    day3_rucksack_reorganization()
 }
