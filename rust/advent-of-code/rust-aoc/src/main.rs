@@ -111,20 +111,25 @@ fn day3_rucksack_reorganization() {
 
     let mut total_priority: u32 = 0;
 
+    let mut groups = ["", "", ""];
+    let mut i = 0;
+
     for rucksack in rucksacks.split("\n") {
-        let rucksack_size = rucksack.len();
-        let rucksack_items = rucksack.as_bytes();
-        let compartment1 = &rucksack_items[..rucksack_size / 2 + 1];
-        let compartment2 = &rucksack_items[rucksack_size / 2..];
+        groups[i] = rucksack;
+        i = (i + 1) % 3;
+
+        if i != 0 || groups[0].len() == 0 {
+            continue;
+        };
 
         let mut special_item = 0u8;
 
-        for item in compartment1 {
-            if compartment2.contains(item) {
+        for item in groups[0].as_bytes() {
+            if groups[1].as_bytes().contains(item) && groups[2].as_bytes().contains(item) {
                 special_item = *item;
                 break;
             }
-        };
+        }
 
         let priority = if special_item >= b'a' {
             special_item - b'a' + 1
