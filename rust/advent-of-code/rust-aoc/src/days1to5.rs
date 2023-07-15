@@ -1,4 +1,3 @@
-use core::num;
 use std::collections::HashMap;
 use std::fs;
 
@@ -203,13 +202,20 @@ pub fn day5_supply_stacks() {
             _ => unreachable!(),
         };
 
+        let mut items: Vec<u8> = Vec::new();
+
         for _ in 0..num_items {
             let item = stacks[from_stack_id-1].pop().expect("not enough items in stack.");
-            stacks[to_stack_id-1].push(item)
+            items.push(item);
+        }
+
+        let mut i = items.len()-1;
+
+        while i < items.len() {
+            stacks[to_stack_id-1].push(items[i]);
+            i = i.wrapping_sub(1);
         }
     }
-
-
 
     for stack in stacks {
         let top_item = char::from(stack[stack.len()-1]);
