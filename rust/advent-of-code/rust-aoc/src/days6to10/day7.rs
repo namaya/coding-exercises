@@ -4,8 +4,6 @@ use std::fs;
 use std::iter::Peekable;
 use std::str::Split;
 
-use crate::days1to5::day2_rock_paper_scissors;
-
 
 #[derive(Debug)]
 struct File {
@@ -124,6 +122,21 @@ impl FileSystem {
             .map(|file| file.size)
             .sum()
     }
+
+    fn dir_delete_size(&self) -> u32 {
+        const DEVICE_TOTAL_SIZE: u32 = 70_000_000;
+        const DEVICE_TARGET_UNUSED: u32 = 30_000_000;
+
+        let used = self.files[0].size;
+        let unused = DEVICE_TOTAL_SIZE - used;
+        let target = DEVICE_TARGET_UNUSED - unused;
+
+        self.files.iter()
+            .filter(|file| file.is_dir && file.size >= target)
+            .map(|file| file.size)
+            .min()
+            .expect("No directories will free up enough space.")
+    }
 }
 
 pub fn day7_no_space_left_on_device() {
@@ -156,6 +169,7 @@ pub fn day7_no_space_left_on_device() {
     }
 
     println!("{}", fs.dirs_sum());
+    println!("{}", fs.dir_delete_size());
 
     // println!("{:?}", fs.files);
 }
