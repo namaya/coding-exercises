@@ -5,6 +5,7 @@ use std::fs;
 
 pub mod day7;
 pub mod day8;
+pub mod day9;
 
 pub fn day6_tuning_trouble() {
     let path = "inputs/2022/day6/full.txt";
