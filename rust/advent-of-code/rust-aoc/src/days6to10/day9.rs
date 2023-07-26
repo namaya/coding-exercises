@@ -9,13 +9,12 @@ enum Motion {
 }
 
 pub fn day9_rope_bridge() {
-    let path = "inputs/2022/day9/full.txt";
+    let path = "inputs/2022/day9/large-example.txt";
+    const N: u32 = 10;
 
-    let mut head_pos = (0, 0);
-    let mut tail_pos = (0, 0);
-    let mut visited = HashSet::new();
-
-    visited.insert((0,0));
+    let mut knots_pos: Vec<(i32, i32)> = Vec::from_iter((0..N).map(|_| (0,0)));
+    let mut visited = HashSet::from([(0,0)]);
+    println!("Pos: {:?}", (0,0));
 
 
     fs::read_to_string(path)
@@ -34,55 +33,78 @@ pub fn day9_rope_bridge() {
         .for_each(|motion| {
             match motion {
                 Motion::Up(nsteps) => {
+                    println!("U {}", nsteps);
                     for i in 0..nsteps {
-                        head_pos.1 += 1;
+                        let len = knots_pos.len();
+                        knots_pos[len-1].1 += 1;
 
-                        if head_pos.1 - tail_pos.1 >= 2 {
-                            tail_pos.1 += 1;
-                            tail_pos.0 += head_pos.0 - tail_pos.0;
-
-                            if !visited.contains(&tail_pos) {
-                                visited.insert(tail_pos);
+                        for i in (0..knots_pos.len()-1).rev() {
+                            if knots_pos[i+1].1 - knots_pos[i].1 >= 2 {
+                                knots_pos[i].1 += 1;
+                                knots_pos[i].0 += knots_pos[i+1].0 - knots_pos[i].0;
                             }
+                        }
+
+                        if !visited.contains(&knots_pos[0]) {
+                            visited.insert(knots_pos[0]);
+                            println!("Pos: {:?}", knots_pos[0]);
                         }
                     }
                 }
                 Motion::Right(nsteps) => {
+                    println!("R {}", nsteps);
                     for i in 0..nsteps {
-                        head_pos.0 += 1;
+                        let len = knots_pos.len();
+                        knots_pos[len-1].0 += 1;
 
-                        if head_pos.0 - tail_pos.0 >= 2 {
-                            tail_pos.0 += 1;
-                            tail_pos.1 += head_pos.1 - tail_pos.1;
-                            if !visited.contains(&tail_pos) {
-                                visited.insert(tail_pos);
+                        for i in (0..knots_pos.len()-1).rev() {
+                            if knots_pos[i+1].0 - knots_pos[i].0 >= 2 {
+                                knots_pos[i].0 += 1;
+                                knots_pos[i].1 += knots_pos[i+1].1 - knots_pos[i].1;
                             }
+                        }
+
+                        if !visited.contains(&knots_pos[0]) {
+                            visited.insert(knots_pos[0]);
+                            println!("Pos: {:?}", knots_pos[0]);
                         }
                     }
                 },
                 Motion::Down(nsteps) => {
+                    println!("D {}", nsteps);
                     for i in 0..nsteps {
-                        head_pos.1 -= 1;
+                        let len = knots_pos.len();
+                        knots_pos[len-1].1 -= 1;
 
-                        if head_pos.1 - tail_pos.1 <= -2 {
-                            tail_pos.1 -= 1;
-                            tail_pos.0 += head_pos.0 - tail_pos.0;
-                            if !visited.contains(&tail_pos) {
-                                visited.insert(tail_pos);
+                        for i in (0..knots_pos.len()-1).rev() {
+                            if knots_pos[i+1].1 - knots_pos[i].1 <= -2 {
+                                knots_pos[i].1 -= 1;
+                                knots_pos[i].0 += knots_pos[i+1].0 - knots_pos[i].0;
                             }
+                        }
+
+                        if !visited.contains(&knots_pos[0]) {
+                            visited.insert(knots_pos[0]);
+                            println!("Pos: {:?}", knots_pos[0]);
                         }
                     }
                 },
                 Motion::Left(nsteps) => {
+                    println!("L {}", nsteps);
                     for i in 0..nsteps {
-                        head_pos.0 -= 1;
+                        let len = knots_pos.len();
+                        knots_pos[len-1].0 -= 1;
 
-                        if head_pos.0 - tail_pos.0 <= -2 {
-                            tail_pos.0 -= 1;
-                            tail_pos.1 += head_pos.1 - tail_pos.1;
-                            if !visited.contains(&tail_pos) {
-                                visited.insert(tail_pos);
+                        for i in (0..knots_pos.len()-1).rev() {
+                            if knots_pos[i+1].0 - knots_pos[i].0 <= -2 {
+                                knots_pos[i].0 -= 1;
+                                knots_pos[i].1 += knots_pos[i+1].1 - knots_pos[i].1;
                             }
+                        }
+
+                        if !visited.contains(&knots_pos[0]) {
+                            visited.insert(knots_pos[0]);
+                            println!("Pos: {:?}", knots_pos[0]);
                         }
                     }
                 }
