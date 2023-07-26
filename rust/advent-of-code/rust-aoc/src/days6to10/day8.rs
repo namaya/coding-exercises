@@ -19,14 +19,14 @@ pub fn day8_treetop_tree_house() {
     // let mut visible_count = 0;
     let mut max_score = 0;
 
-    for (i, row) in input.split("\n").enumerate() {
-        for (j, col) in row.chars().enumerate() {
+    for i in 0..grid.len() {
+        for j in 0..grid[i].len() {
             // if row_visible(&grid, i, j) || col_visible(&grid, i, j) {
             //     visible_count += 1;
             // }
             let score = row_score(&grid, i, j) * col_score(&grid, i, j);
 
-            println!("{}, {}: {}", i, j, score);
+            // println!("{}, {}: {}", i, j, score);
 
             if score > max_score {
                 max_score = score;
