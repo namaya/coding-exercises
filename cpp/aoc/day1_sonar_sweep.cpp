@@ -5,11 +5,10 @@
 #include <span>
 #include <vector>
 
-std::vector<int> parse_input(std::istream &input_stream);
+std::vector<int> parse_input(std::istream &);
+int count_increasing_delta(const std::vector<int> &, int window_size = 1);
 
 int main() {
-  const auto WINDOW_SIZE = 3;
-
   std::ifstream input_file{"inputs/2021/day1/input.txt"};
   if (!input_file) {
     std::cerr << "Could not open input file";
@@ -18,25 +17,11 @@ int main() {
 
   auto depth_measurements = parse_input(input_file);
 
-  auto increased_count = 0;
+  auto part1_answer = count_increasing_delta(depth_measurements);
+  auto part2_answer = count_increasing_delta(depth_measurements, 3);
 
-  auto prev_window_sum = std::reduce(depth_measurements.begin(),
-                                     depth_measurements.begin() + WINDOW_SIZE);
-
-  auto cur_window_sum = prev_window_sum;
-
-  for (auto i = WINDOW_SIZE; i < depth_measurements.size(); i++) {
-    cur_window_sum = cur_window_sum - depth_measurements[i - WINDOW_SIZE] +
-                     depth_measurements[i];
-
-    if (cur_window_sum > prev_window_sum) {
-      increased_count++;
-    }
-
-    prev_window_sum = cur_window_sum;
-  }
-
-  std::cout << increased_count << std::endl;
+  std::cout << "Part1: " << part1_answer << "\n";
+  std::cout << "Part2: " << part2_answer << "\n";
 }
 
 std::vector<int> parse_input(std::istream &input_stream) {
@@ -49,4 +34,26 @@ std::vector<int> parse_input(std::istream &input_stream) {
   }
 
   return depth_measurements;
+}
+
+int count_increasing_delta(const std::vector<int> &depth_measurements,
+                           int window_size) {
+  auto increased_count = 0;
+
+  auto prev_window_sum = std::reduce(depth_measurements.begin(),
+                                     depth_measurements.begin() + window_size);
+  auto cur_window_sum = prev_window_sum;
+
+  for (auto i = window_size; i < depth_measurements.size(); i++) {
+    cur_window_sum = cur_window_sum - depth_measurements[i - window_size] +
+                     depth_measurements[i];
+
+    if (cur_window_sum > prev_window_sum) {
+      increased_count++;
+    }
+
+    prev_window_sum = cur_window_sum;
+  }
+
+  return increased_count;
 }
