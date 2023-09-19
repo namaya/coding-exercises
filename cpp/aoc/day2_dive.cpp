@@ -9,6 +9,8 @@
 enum class Direction { up, forward, down };
 
 std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream);
+int part1(const std::vector<std::pair<Direction, int>> &movements);
+int part2(const std::vector<std::pair<Direction, int>> &movements);
 
 int main() {
   std::ifstream input_file{"inputs/2021/day2/input.txt"};
@@ -19,25 +21,11 @@ int main() {
 
   auto movements = parse_input(input_file);
 
-  auto horizontal_pos = 0;
-  auto depth = 0;
+  auto part1_answer = part1(movements);
+  auto part2_answer = part2(movements);
 
-  for (auto movement : movements) {
-    switch (movement.first) {
-    case Direction::up:
-      depth -= movement.second;
-      break;
-    case Direction::forward:
-      horizontal_pos += movement.second;
-      break;
-    case Direction::down:
-      depth += movement.second;
-      break;
-    }
-  }
-
-  std::cout << "Part 1: loc: (" << horizontal_pos << "," << depth
-            << "), answer: " << horizontal_pos * depth << "\n";
+  std::cout << "Part 1: " << part1_answer << "\n";
+  std::cout << "Part 2: " << part2_answer << "\n";
 }
 
 std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream) {
@@ -78,4 +66,48 @@ std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream) {
   }
 
   return movements;
+}
+
+int part1(const std::vector<std::pair<Direction, int>> &movements) {
+  auto horizontal_pos = 0;
+  auto depth = 0;
+
+  for (auto movement : movements) {
+    switch (movement.first) {
+    case Direction::up:
+      depth -= movement.second;
+      break;
+    case Direction::forward:
+      horizontal_pos += movement.second;
+      break;
+    case Direction::down:
+      depth += movement.second;
+      break;
+    }
+  }
+
+  return horizontal_pos * depth;
+}
+
+int part2(const std::vector<std::pair<Direction, int>> &movements) {
+  auto horizontal_pos = 0;
+  auto depth = 0;
+  auto aim = 0;
+
+  for (auto movement : movements) {
+    switch (movement.first) {
+    case Direction::up:
+      aim -= movement.second;
+      break;
+    case Direction::forward:
+      horizontal_pos += movement.second;
+      depth += aim * movement.second;
+      break;
+    case Direction::down:
+      aim += movement.second;
+      break;
+    }
+  }
+
+  return horizontal_pos * depth;
 }
