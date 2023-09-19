@@ -5,8 +5,17 @@
 #include <span>
 #include <vector>
 
-std::vector<int> parse_input(std::istream &);
-int count_increasing_delta(const std::vector<int> &, int window_size = 1);
+/// @brief Parse an input stream into a vector of depth measurements.
+/// @param input_stream The input stream.
+/// @return A vector of depth measurements.
+std::vector<int> parse_input(std::istream &input_stream);
+
+/// @brief Count the number of increaseing deltas in the depth measurements.
+/// @param depth_measurements The depth measurements
+/// @param window_size window size
+/// @return The number of increasing deltas.
+int count_increasing_delta(const std::vector<int> &depth_measurements,
+                           int window_size = 1);
 
 int main() {
   std::ifstream input_file{"inputs/2021/day1/input.txt"};
