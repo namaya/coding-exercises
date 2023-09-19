@@ -11,7 +11,7 @@ enum class Direction { up, forward, down };
 std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream);
 
 int main() {
-  std::ifstream input_file{"inputs/2021/day2/example.txt"};
+  std::ifstream input_file{"inputs/2021/day2/input.txt"};
   if (!input_file) {
     std::cerr << "Could not open input file";
     exit(1);
@@ -19,11 +19,25 @@ int main() {
 
   auto movements = parse_input(input_file);
 
+  auto horizontal_pos = 0;
+  auto depth = 0;
+
   for (auto movement : movements) {
-    // std::cout << "(" << movement.first << "," << movement.second << ")\n";
-    std::cout << static_cast<int>(movement.first) << ", " << movement.second
-              << "\n";
+    switch (movement.first) {
+    case Direction::up:
+      depth -= movement.second;
+      break;
+    case Direction::forward:
+      horizontal_pos += movement.second;
+      break;
+    case Direction::down:
+      depth += movement.second;
+      break;
+    }
   }
+
+  std::cout << "Part 1: loc: (" << horizontal_pos << "," << depth
+            << "), answer: " << horizontal_pos * depth << "\n";
 }
 
 std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream) {

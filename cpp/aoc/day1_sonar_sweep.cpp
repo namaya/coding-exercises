@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <numeric>
-#include <span>
 #include <vector>
 
 /// @brief Parse an input stream into a vector of depth measurements.
