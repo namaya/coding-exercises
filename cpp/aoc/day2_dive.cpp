@@ -1,5 +1,6 @@
 
 #include <charconv>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <string_view>
@@ -12,10 +13,18 @@ std::vector<std::pair<Direction, int>> parse_input(std::istream &input_stream);
 int part1(const std::vector<std::pair<Direction, int>> &movements);
 int part2(const std::vector<std::pair<Direction, int>> &movements);
 
-int main() {
-  std::ifstream input_file{"inputs/2021/day2/input.txt"};
+int main(int argc, char *argv[]) {
+  if (argc > 2) {
+    std::cerr << "Too many command line arguments";
+    exit(1);
+  } else if (argc == 1) {
+    std::cerr << "Missing commmand line argument";
+    exit(1);
+  }
+
+  std::ifstream input_file{argv[1]};
   if (!input_file) {
-    std::cerr << "Could not open input file";
+    std::cerr << "Could not open input file '" << argv[1] << "'";
     exit(1);
   }
 

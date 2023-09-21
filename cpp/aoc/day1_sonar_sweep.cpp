@@ -16,10 +16,18 @@ std::vector<int> parse_input(std::istream &input_stream);
 int count_increasing_delta(const std::vector<int> &depth_measurements,
                            int window_size = 1);
 
-int main() {
-  std::ifstream input_file{"inputs/2021/day1/input.txt"};
+int main(int argc, char *argv[]) {
+  if (argc > 2) {
+    std::cerr << "Too many command line arguments";
+    exit(1);
+  } else if (argc == 1) {
+    std::cerr << "Missing commmand line argument";
+    exit(1);
+  }
+
+  std::ifstream input_file{argv[1]};
   if (!input_file) {
-    std::cerr << "Could not open input file";
+    std::cerr << "Could not open input file '" << argv[1] << "'";
     exit(1);
   }
 
