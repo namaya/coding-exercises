@@ -7,6 +7,8 @@ std::vector<std::string> parse_input(std::istream &input_stream);
 int part1(const std::vector<std::string> &report);
 int part2(const std::vector<std::string> &report);
 int bin_to_decimal(const int *bnum, int bnum_size);
+void find_most_common(const std::vector<std::string> &report,
+                      int *most_common_bits);
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
@@ -47,36 +49,15 @@ std::vector<std::string> parse_input(std::istream &input_stream) {
 int part1(const std::vector<std::string> &report) {
   int bin_number_size = report[0].size();
 
-  int counts[bin_number_size];
+  int most_common_bits[bin_number_size];
 
-  for (auto i = 0; i < bin_number_size; i++) {
-    counts[i] = 0;
-  }
+  find_most_common(report, most_common_bits);
 
-  for (auto binary_number : report) {
-    for (auto i = 0; i < binary_number.size(); i++) {
-      if (binary_number[i] == '0') {
-        counts[i] -= 1;
-      } else {
-        counts[i] += 1;
-      }
-    }
-  }
-
-  int gamma_rate_bin[bin_number_size];
+  auto gamma_rate_bin = most_common_bits;
   int epsilon_rate_bin[bin_number_size];
 
   for (auto i = 0; i < bin_number_size; i++) {
-    if (counts[i] > 0) {
-      gamma_rate_bin[i] = 1;
-      epsilon_rate_bin[i] = 0;
-    } else if (counts[i] < 0) {
-      gamma_rate_bin[i] = 0;
-      epsilon_rate_bin[i] = 1;
-    } else {
-      std::cerr << "Unexpected! Equal number of 0's and 1's.";
-      exit(1);
-    }
+    epsilon_rate_bin[i] = 1 - gamma_rate_bin[i];
   }
 
   int gamma_rate = bin_to_decimal(gamma_rate_bin, bin_number_size);
@@ -95,4 +76,34 @@ int bin_to_decimal(const int *bnum, int bnum_size) {
   }
 
   return decimal;
+}
+
+void find_most_common(const std::vector<std::string> &report,
+                      int *most_common_bits) {
+  int size = report[0].size();
+  int counts[size];
+
+  for (auto i = 0; i < size; i++) {
+    counts[i] = 0;
+  }
+
+  for (auto &binary_number : report) {
+    for (auto i = 0; i < binary_number.size(); i++) {
+      if (binary_number[i] == '0') {
+        counts[i] -= 1;
+      } else {
+        counts[i] += 1;
+      }
+    }
+  }
+
+  for (auto i = 0; i < size; i++) {
+    if (counts[i] > 0) {
+      most_common_bits[i] = 1;
+    } else if (counts[i] < 0) {
+      most_common_bits[i] = 0;
+    } else {
+      most_common_bits[i] = -1;
+    }
+  }
 }
