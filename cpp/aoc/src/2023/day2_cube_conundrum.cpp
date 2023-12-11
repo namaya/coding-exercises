@@ -22,18 +22,6 @@ int main(int argc, char *argv[]) {
   }
 
   auto games = parse_input(input_file);
-
-  // TODO: Debug games
-
-  for (const auto &game : games) {
-    for (const auto &cube : game) {
-      for (const auto &[color, number] : cube) {
-        std::cout << color << " " << number << "\n";
-      }
-      std::cout << "\n";
-    }
-    std::cout << "\n";
-  }
 }
 
 std::vector<std::vector<std::unordered_map<std::string, int>>>
@@ -62,11 +50,12 @@ parse_input(std::istream &input_stream) {
       while (std::getline(cubestream, token, ',')) {
         auto cube = std::stringstream{token};
 
-        std::string color;
-        std::getline(cube, color, ' ');
-
         std::string number;
         std::getline(cube, number, ' ');
+        std::getline(cube, number, ' ');
+
+        std::string color;
+        std::getline(cube, color, ' ');
 
         cubes[color] = std::stoi(number);
       }
