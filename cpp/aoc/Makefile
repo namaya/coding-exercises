@@ -3,9 +3,17 @@ YEAR?=2021
 DAY?=1
 
 ifdef DEBUG
-	FILE = example.txt
+	ifdef PART
+		FILE = part$(PART)/example.txt
+	else
+		FILE = example.txt
+	endif
 else
-	FILE = input.txt
+	ifdef PART
+		FILE = part$(PART)/input.txt
+	else
+		FILE = input.txt
+	endif
 endif
 
 run:
