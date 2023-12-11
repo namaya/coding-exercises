@@ -4,7 +4,9 @@
 #include <vector>
 
 std::vector<std::vector<std::unordered_map<std::string, int>>>
-parse_input(std::istream &input_stream);
+parse_input(std::istream &);
+int part1(const std::vector<std::vector<std::unordered_map<std::string, int>>>);
+int part2(const std::vector<std::vector<std::unordered_map<std::string, int>>>);
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
@@ -21,10 +23,16 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
+  auto games = parse_input(input_file);
+
+  std::cout << "Part1: " << part1(games) << "\n";
+  std::cout << "Part2: " << part2(games) << "\n";
+}
+
+int part1(const std::vector<std::vector<std::unordered_map<std::string, int>>>
+              games) {
   const auto max_cubes = std::unordered_map<std::string, int>{
       {"red", 12}, {"green", 13}, {"blue", 14}};
-
-  auto games = parse_input(input_file);
 
   auto id = 1;
   auto sum = 0;
@@ -52,7 +60,36 @@ int main(int argc, char *argv[]) {
     id += 1;
   }
 
-  std::cout << sum << "\n";
+  return sum;
+}
+
+int part2(const std::vector<std::vector<std::unordered_map<std::string, int>>>
+              games) {
+
+  auto sum = 0;
+
+  for (const auto &game : games) {
+    auto max_cubes = std::unordered_map<std::string, int>{
+        {"red", 0}, {"green", 0}, {"blue", 0}};
+
+    for (const auto &hand : game) {
+      for (const auto &[color, number] : hand) {
+        if (number > max_cubes.at(color)) {
+          max_cubes[color] = number;
+        }
+      }
+    }
+
+    auto power = 1;
+
+    for (const auto &[color, number] : max_cubes) {
+      power *= number;
+    }
+
+    sum += power;
+  }
+
+  return sum;
 }
 
 std::vector<std::vector<std::unordered_map<std::string, int>>>
