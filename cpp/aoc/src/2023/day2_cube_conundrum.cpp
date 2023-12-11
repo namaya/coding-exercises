@@ -21,7 +21,38 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
+  const auto max_cubes = std::unordered_map<std::string, int>{
+      {"red", 12}, {"green", 13}, {"blue", 14}};
+
   auto games = parse_input(input_file);
+
+  auto id = 1;
+  auto sum = 0;
+
+  for (const auto &game : games) {
+    auto is_possible = true;
+
+    for (const auto &hand : game) {
+      for (const auto &[color, number] : hand) {
+        if (number > max_cubes.at(color)) {
+          is_possible = false;
+          break;
+        }
+      }
+
+      if (!is_possible) {
+        break;
+      }
+    }
+
+    if (is_possible) {
+      sum += id;
+    }
+
+    id += 1;
+  }
+
+  std::cout << sum << "\n";
 }
 
 std::vector<std::vector<std::unordered_map<std::string, int>>>
