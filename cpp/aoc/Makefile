@@ -1,4 +1,5 @@
 
+YEAR?=2021
 DAY?=1
 
 ifdef DEBUG
@@ -8,6 +9,6 @@ else
 endif
 
 run:
-	clang++ -std=c++20 day$(DAY)*.cpp 
-	./a.out inputs/2021/day$(DAY)/$(FILE)
+	clang++ -std=c++20 src/$(YEAR)/day$(DAY)*.cpp 
+	./a.out inputs/$(YEAR)/day$(DAY)/$(FILE)
 	@rm a.out
