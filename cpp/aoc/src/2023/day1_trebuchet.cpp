@@ -1,5 +1,7 @@
+#include <cctype>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
 
 std::vector<std::string> parse_input(std::istream &input_stream);
@@ -19,7 +21,31 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  // FILL ME IN.
+  auto inputs = parse_input(input_file);
+
+  auto sum = 0;
+
+  for (const auto &input : inputs) {
+    auto i = 0;
+    while (i < input.size() && !std::isdigit(input[i])) {
+      i += 1;
+    }
+
+    auto first_digit = std::string(1, input[i]);
+
+    i = input.size() - 1;
+    while (i >= 0 && !std::isdigit(input[i])) {
+      i -= 1;
+    }
+
+    auto second_digit = std::string(1, input[i]);
+
+    auto output = std::stoi(first_digit + second_digit);
+
+    sum += output;
+  }
+
+  std::cout << "Part1: " << sum << "\n";
 }
 
 std::vector<std::string> parse_input(std::istream &input_stream) {
