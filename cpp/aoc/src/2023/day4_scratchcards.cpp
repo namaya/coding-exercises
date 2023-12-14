@@ -12,6 +12,11 @@ public:
         drawn_numbers{drawn_numbers} {}
 
   int score() const {
+    auto count = numWinningNumbers();
+    return (int)std::pow(2, count - 1);
+  }
+
+  int numWinningNumbers() const {
     auto count = 0;
 
     for (const auto drawn_number : drawn_numbers) {
@@ -20,7 +25,7 @@ public:
       }
     }
 
-    return (int)std::pow(2, count - 1);
+    return count;
   }
 
   friend std::ostream &operator<<(std::ostream &os, const ScratchCard &card) {
@@ -78,7 +83,31 @@ int part1(std::vector<ScratchCard> scratch_cards) {
   return std::accumulate(scores.begin(), scores.end(), 0);
 }
 
-int part2(std::vector<ScratchCard> input) { return 0; }
+int findNumWinningHands(std::vector<ScratchCard> scratch_cards, int i) {
+  if (i >= scratch_cards.size()) {
+    return 0;
+  }
+
+  auto num_matches = scratch_cards[i].numWinningNumbers();
+
+  auto result = 1;
+
+  for (auto j = i + 1; j < i + 1 + num_matches; j++) {
+    result += findNumWinningHands(scratch_cards, j);
+  }
+
+  return result;
+}
+
+int part2(std::vector<ScratchCard> scratch_cards) {
+  auto result = 0;
+
+  for (auto i = 0; i < scratch_cards.size(); i++) {
+    result += findNumWinningHands(scratch_cards, i);
+  }
+
+  return result;
+}
 
 std::vector<ScratchCard> parse_input(std::istream &input_stream) {
   auto result = std::vector<ScratchCard>{};
