@@ -177,35 +177,15 @@ int calculate_gear_ratio(std::vector<std::vector<char>> schematic, int j,
   auto gear_ratio = 1;
   auto count = 0;
 
-  // check top left
-  if (i - 1 >= 0 && j - 1 >= 0 && std::isdigit(schematic[j - 1][i - 1])) {
-    if (i + 1 < schematic[0].size() && std::isdigit(schematic[j - 1][i + 1])) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j - 1, i - 1);
-      count += 1;
-    }
-  }
-
   // check top
-  if (j - 1 >= 0 && std::isdigit(schematic[j - 1][i])) {
-    if ((i > 0 && std::isdigit(schematic[j - 1][i - 1])) ||
-        (i + 1 < schematic[0].size() &&
-         std::isdigit(schematic[j - 1][i + 1]))) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j - 1, i);
-      count += 1;
+  for (auto k = i - 1; k <= i + 1; k++) {
+    if (k < 0 || k >= schematic[0].size()) {
+      continue;
     }
-  }
 
-  // check top right
-  if (i + 1 < schematic[0].size() && j - 1 >= 0 &&
-      std::isdigit(schematic[j - 1][i + 1])) {
-    if (i - 1 >= 0 && std::isdigit(schematic[j - 1][i - 1])) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j - 1, i + 1);
+    if ((std::isdigit(schematic[j - 1][k])) &&
+        (k == i - 1 || !std::isdigit(schematic[j - 1][k - 1]))) {
+      gear_ratio *= extract_part_number(schematic, j - 1, k);
       count += 1;
     }
   }
@@ -222,36 +202,15 @@ int calculate_gear_ratio(std::vector<std::vector<char>> schematic, int j,
     count += 1;
   }
 
-  // check bottom left
-  if (i - 1 >= 0 && j + 1 < schematic.size() &&
-      std::isdigit(schematic[j + 1][i - 1])) {
-    if (i + 1 < schematic[0].size() && std::isdigit(schematic[j + 1][i + 1])) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j + 1, i - 1);
-      count += 1;
-    }
-  }
-
   // check bottom
-  if (j + 1 < schematic.size() && std::isdigit(schematic[j + 1][i])) {
-    if ((i > 0 && std::isdigit(schematic[j + 1][i - 1])) ||
-        (i + 1 < schematic[0].size() &&
-         std::isdigit(schematic[j + 1][i + 1]))) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j + 1, i);
-      count += 1;
+  for (auto k = i - 1; k <= i + 1; k++) {
+    if (k < 0 || k >= schematic[0].size()) {
+      continue;
     }
-  }
 
-  // check bottom right
-  if (i + 1 < schematic[0].size() && j + 1 < schematic.size() &&
-      std::isdigit(schematic[j + 1][i + 1])) {
-    if (i - 1 >= 0 && std::isdigit(schematic[j + 1][i - 1])) {
-      // pass
-    } else {
-      gear_ratio *= extract_part_number(schematic, j + 1, i + 1);
+    if ((std::isdigit(schematic[j + 1][k])) &&
+        (k == i - 1 || !std::isdigit(schematic[j + 1][k - 1]))) {
+      gear_ratio *= extract_part_number(schematic, j + 1, k);
       count += 1;
     }
   }
