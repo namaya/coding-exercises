@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <numeric>
 #include <sstream>
 #include <unordered_set>
 #include <vector>
@@ -10,16 +11,16 @@ public:
       : winning_numbers{winning_numbers.begin(), winning_numbers.end()},
         drawn_numbers{drawn_numbers} {}
 
-  int score() {
+  int score() const {
     auto count = 0;
 
-    for (auto drawn_number : drawn_numbers) {
+    for (const auto drawn_number : drawn_numbers) {
       if (winning_numbers.contains(drawn_number)) {
         count += 1;
       }
     }
 
-    return std::pow(2, count - 1);
+    return (int)std::pow(2, count - 1);
   }
 
   friend std::ostream &operator<<(std::ostream &os, const ScratchCard &card) {
@@ -68,7 +69,15 @@ int main(int argc, char *argv[]) {
   std::cout << "Part2: " << part2(input) << "\n";
 }
 
-int part1(std::vector<ScratchCard> input) { return 0; }
+int part1(std::vector<ScratchCard> scratch_cards) {
+  auto scores = std::vector<int>{};
+  for (const auto &card : scratch_cards) {
+    scores.push_back(card.score());
+  }
+
+  return std::accumulate(scores.begin(), scores.end(), 0);
+}
+
 int part2(std::vector<ScratchCard> input) { return 0; }
 
 std::vector<ScratchCard> parse_input(std::istream &input_stream) {
