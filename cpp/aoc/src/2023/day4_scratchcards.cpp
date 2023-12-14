@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -83,9 +84,14 @@ int part1(std::vector<ScratchCard> scratch_cards) {
   return std::accumulate(scores.begin(), scores.end(), 0);
 }
 
-int findNumWinningHands(std::vector<ScratchCard> scratch_cards, int i) {
+int findNumWinningHands(std::vector<ScratchCard> scratch_cards, int i,
+                        int *cache) {
   if (i >= scratch_cards.size()) {
     return 0;
+  }
+
+  if (cache[i] >= 0) {
+    return cache[i];
   }
 
   auto num_matches = scratch_cards[i].numWinningNumbers();
@@ -93,17 +99,22 @@ int findNumWinningHands(std::vector<ScratchCard> scratch_cards, int i) {
   auto result = 1;
 
   for (auto j = i + 1; j < i + 1 + num_matches; j++) {
-    result += findNumWinningHands(scratch_cards, j);
+    result += findNumWinningHands(scratch_cards, j, cache);
   }
+
+  cache[i] = result;
 
   return result;
 }
 
 int part2(std::vector<ScratchCard> scratch_cards) {
   auto result = 0;
+  int cache[scratch_cards.size() + 1];
+
+  std::fill_n(cache, scratch_cards.size() + 1, -1);
 
   for (auto i = 0; i < scratch_cards.size(); i++) {
-    result += findNumWinningHands(scratch_cards, i);
+    result += findNumWinningHands(scratch_cards, i, cache);
   }
 
   return result;
