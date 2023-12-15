@@ -2,9 +2,20 @@
 #include <iostream>
 #include <vector>
 
-std::vector<std::string> parse_input(std::istream &);
-int part1(std::vector<std::string>);
-int part2(std::vector<std::string>);
+int part1(std::vector<std::string> input) { return 0; }
+int part2(std::vector<std::string> input) { return 0; }
+
+std::vector<std::string> parse_input(std::istream &input_stream) {
+  auto result = std::vector<std::string>{};
+
+  std::string line;
+
+  while (std::getline(input_stream, line)) {
+    result.push_back(line);
+  }
+
+  return result;
+}
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
@@ -25,19 +36,4 @@ int main(int argc, char *argv[]) {
 
   std::cout << "Part1: " << part1(input) << "\n";
   std::cout << "Part2: " << part2(input) << "\n";
-}
-
-int part1(std::vector<std::string> input) { return 0; }
-int part2(std::vector<std::string> input) { return 0; }
-
-std::vector<std::string> parse_input(std::istream &input_stream) {
-  auto result = std::vector<std::string>{};
-
-  std::string line;
-
-  while (std::getline(input_stream, line)) {
-    result.push_back(line);
-  }
-
-  return result;
 }
