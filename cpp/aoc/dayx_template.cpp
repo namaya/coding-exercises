@@ -2,9 +2,6 @@
 #include <iostream>
 #include <vector>
 
-int part1(std::vector<std::string> input) { return 0; }
-int part2(std::vector<std::string> input) { return 0; }
-
 std::vector<std::string> parse_input(std::istream &input_stream) {
   auto result = std::vector<std::string>{};
 
@@ -16,6 +13,9 @@ std::vector<std::string> parse_input(std::istream &input_stream) {
 
   return result;
 }
+
+int part1(std::vector<std::string> input) { return 0; }
+int part2(std::vector<std::string> input) { return 0; }
 
 int main(int argc, char *argv[]) {
   if (argc > 2) {
